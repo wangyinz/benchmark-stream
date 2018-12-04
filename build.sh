@@ -93,15 +93,15 @@ COMPILE_F=${TEMP_V//,/}
 
 mkdir test_${COMPILER}-${C_VER}_${COMPILE_F}
 
-cd stream-5.10 
-
 if [ "$NO_BUILD" -eq "0" ]; then
+  cd stream-5.10 
   icc -O3 -lrt ${COMPILE_FLAG} -qopenmp stream.c -o stream_${COMPILER}-${C_VER}_${COMPILE_F}
   mv stream_${COMPILER}-${C_VER}_${COMPILE_F} ../test_${COMPILER}-${C_VER}_${COMPILE_F}
+  cd ..
 fi
 
-if [ -f ../test_${COMPILER}-${C_VER}_${COMPILE_F} ]; then
-  cd ../test_${COMPILER}-${C_VER}_${COMPILE_F}
+if [ -f test_${COMPILER}-${C_VER}_${COMPILE_F}/stream_${COMPILER}-${C_VER}_${COMPILE_F} ]; then
+  cd test_${COMPILER}-${C_VER}_${COMPILE_F}
   cat > stream_job_${N_THREAD}.sh << EOF
 #!/bin/bash
 #SBATCH -J stream_${N_THREAD}
@@ -117,7 +117,6 @@ export OMP_NUM_THREADS=${N_THREAD}
 
 module purge
 module load $COMPILER/$C_VER
-module load $MPI_NAME/$M_VER
 
 date
 
