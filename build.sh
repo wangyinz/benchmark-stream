@@ -169,6 +169,7 @@ do
   awk '(NR%33==29){sum+=\$2;n+=1} END { if (n > 0) print "Add: " sum/n }' raw_output_\${j}.txt
   awk '(NR%33==30){sum+=\$2;n+=1} END { if (n > 0) print "Triad: " sum/n }' raw_output_\${j}.txt
 
+  cd ..
 done
 EOF
   sbatch stream_job_${N_THREAD_S}_${N_THREAD_E}_${N_LOOP}.sh
